@@ -1,0 +1,58 @@
+<section class="pagina-alunos">
+  <header class="cabecalho">
+    <div>
+      <h1>Gestão de Alunos</h1>
+      <p>Consulte os alunos cadastrados no sistema.</p>
+    </div>
+
+    <button type="button">
+      Novo Aluno
+    </button>
+  </header>
+
+  @if (carregando()) {
+    <p>Carregando alunos...</p>
+  }
+
+  @if (!carregando() && mensagemErro()) {
+    <div class="mensagem-erro">
+      <p>{{ mensagemErro() }}</p>
+
+      <button type="button" (click)="carregarAlunos()">
+        Tentar novamente
+      </button>
+    </div>
+  }
+
+  @if (!carregando() && !mensagemErro() && alunos().length === 0) {
+    <p>Nenhum aluno foi encontrado.</p>
+  }
+
+  @if (!carregando() && !mensagemErro() && alunos().length > 0) {
+    <table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Matrícula</th>
+          <th>Status</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @for (aluno of alunos(); track aluno.id) {
+          <tr>
+            <td>{{ aluno.nome }}</td>
+            <td>{{ aluno.matricula }}</td>
+            <td>{{ aluno.status }}</td>
+            <td>
+              <button type="button">Detalhes</button>
+              <button type="button">Editar</button>
+              <button type="button">Excluir</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>
