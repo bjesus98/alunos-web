@@ -1,58 +1,235 @@
-<section class="pagina-alunos">
-  <header class="cabecalho">
-    <div>
-      <h1>Gestão de Alunos</h1>
-      <p>Consulte os alunos cadastrados no sistema.</p>
-    </div>
+<main class="pagina-alunos">
+  <div class="conteudo-alunos">
+    <mat-card class="cartao-alunos">
+      <mat-card-header class="cabecalho-cartao">
+        <div mat-card-avatar class="icone-cabecalho">
+          <mat-icon>school</mat-icon>
+        </div>
 
-    <button type="button">
-      Novo Aluno
-    </button>
-  </header>
+        <div class="titulos">
+          <mat-card-title>
+            Gestão de Alunos
+          </mat-card-title>
 
-  @if (carregando()) {
-    <p>Carregando alunos...</p>
-  }
+          <mat-card-subtitle>
+            Consulte e gerencie os alunos cadastrados no sistema.
+          </mat-card-subtitle>
+        </div>
 
-  @if (!carregando() && mensagemErro()) {
-    <div class="mensagem-erro">
-      <p>{{ mensagemErro() }}</p>
+        <div class="acoes-cabecalho">
+          <button
+            mat-flat-button
+            color="primary"
+            type="button"
+          >
+            <mat-icon>person_add</mat-icon>
+            Novo Aluno
+          </button>
+        </div>
+      </mat-card-header>
 
-      <button type="button" (click)="carregarAlunos()">
-        Tentar novamente
-      </button>
-    </div>
-  }
+      <mat-card-content>
+        @if (carregando()) {
+          <div class="estado-centralizado">
+            <mat-spinner diameter="44"></mat-spinner>
 
-  @if (!carregando() && !mensagemErro() && alunos().length === 0) {
-    <p>Nenhum aluno foi encontrado.</p>
-  }
-
-  @if (!carregando() && !mensagemErro() && alunos().length > 0) {
-    <table>
-      <thead>
-        <tr>
-          <th>Nome</th>
-          <th>Matrícula</th>
-          <th>Status</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        @for (aluno of alunos(); track aluno.id) {
-          <tr>
-            <td>{{ aluno.nome }}</td>
-            <td>{{ aluno.matricula }}</td>
-            <td>{{ aluno.status }}</td>
-            <td>
-              <button type="button">Detalhes</button>
-              <button type="button">Editar</button>
-              <button type="button">Excluir</button>
-            </td>
-          </tr>
+            <p>Carregando alunos...</p>
+          </div>
         }
-      </tbody>
-    </table>
-  }
-</section>
+
+        @if (!carregando() && mensagemErro()) {
+          <div
+            class="mensagem-erro"
+            role="alert"
+          >
+            <div class="icone-erro">
+              <mat-icon>error_outline</mat-icon>
+            </div>
+
+            <div class="conteudo-erro">
+              <strong>Não foi possível carregar a listagem</strong>
+              <span>{{ mensagemErro() }}</span>
+            </div>
+
+            <button
+              mat-stroked-button
+              color="primary"
+              type="button"
+              (click)="carregarAlunos()"
+            >
+              <mat-icon>refresh</mat-icon>
+              Tentar novamente
+            </button>
+          </div>
+        }
+
+        @if (
+          !carregando() &&
+          !mensagemErro() &&
+          alunos().length === 0
+        ) {
+          <div class="estado-vazio">
+            <div class="icone-vazio">
+              <mat-icon>person_search</mat-icon>
+            </div>
+
+            <h2>Nenhum aluno encontrado</h2>
+
+            <p>
+              Ainda não existem alunos disponíveis para exibição.
+            </p>
+
+            <button
+              mat-flat-button
+              color="primary"
+              type="button"
+            >
+              <mat-icon>person_add</mat-icon>
+              Cadastrar primeiro aluno
+            </button>
+          </div>
+        }
+
+        @if (
+          !carregando() &&
+          !mensagemErro() &&
+          alunos().length > 0
+        ) {
+          <div class="resumo-listagem">
+            <div>
+              <span class="rotulo-total">
+                Total de alunos
+              </span>
+
+              <strong class="valor-total">
+                {{ alunos().length }}
+              </strong>
+            </div>
+
+            <button
+              mat-icon-button
+              type="button"
+              aria-label="Atualizar listagem"
+              title="Atualizar listagem"
+              (click)="carregarAlunos()"
+            >
+              <mat-icon>refresh</mat-icon>
+            </button>
+          </div>
+
+          <div class="tabela-container">
+            <table
+              mat-table
+              [dataSource]="alunos()"
+              class="tabela-alunos"
+            >
+              <ng-container matColumnDef="nome">
+                <th mat-header-cell *matHeaderCellDef>
+                  Aluno
+                </th>
+
+                <td mat-cell *matCellDef="let aluno">
+                  <div class="dados-aluno">
+                    <div class="avatar-aluno">
+                      <mat-icon>person</mat-icon>
+                    </div>
+
+                    <span>{{ aluno.nome }}</span>
+                  </div>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="matricula">
+                <th mat-header-cell *matHeaderCellDef>
+                  Matrícula
+                </th>
+
+                <td mat-cell *matCellDef="let aluno">
+                  <span class="matricula">
+                    {{ aluno.matricula }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>
+                  Status
+                </th>
+
+                <td mat-cell *matCellDef="let aluno">
+                  <span
+                    class="status"
+                    [class.status-ativo]="aluno.status === 'ATIVO'"
+                    [class.status-inativo]="aluno.status === 'INATIVO'"
+                  >
+                    <span class="status-indicador"></span>
+                    {{ aluno.status }}
+                  </span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="acoes">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="coluna-acoes"
+                >
+                  Ações
+                </th>
+
+                <td
+                  mat-cell
+                  *matCellDef="let aluno"
+                  class="coluna-acoes"
+                >
+                  <button
+                    mat-icon-button
+                    type="button"
+                    color="primary"
+                    aria-label="Ver detalhes do aluno"
+                    title="Detalhes"
+                  >
+                    <mat-icon>visibility</mat-icon>
+                  </button>
+
+                  <button
+                    mat-icon-button
+                    type="button"
+                    color="primary"
+                    aria-label="Editar aluno"
+                    title="Editar"
+                  >
+                    <mat-icon>edit</mat-icon>
+                  </button>
+
+                  <button
+                    mat-icon-button
+                    type="button"
+                    color="warn"
+                    aria-label="Excluir aluno"
+                    title="Excluir"
+                  >
+                    <mat-icon>delete_outline</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr
+                mat-header-row
+                *matHeaderRowDef="colunasExibidas"
+              ></tr>
+
+              <tr
+                mat-row
+                *matRowDef="
+                  let aluno;
+                  columns: colunasExibidas
+                "
+              ></tr>
+            </table>
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+  </div>
+</main>
