@@ -1,0 +1,61 @@
+:host {
+  display: block;
+}
+
+.pagina-login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+  background:
+    linear-gradient(
+      135deg,
+      #e8eaf6 0%,
+      #e3f2fd 50%,
+      #f5f7fa 100%
+    );
+}
+
+.cartao-login {
+  width: 100%;
+  max-width: 440px;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+mat-card-header {
+  margin-bottom: 24px;
+}
+
+mat-card-title {
+  font-size: 24px;
+  line-height: 1.3;
+}
+
+mat-card-subtitle {
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+.formulario-login {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.botao-entrar {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 8px;
+}
+
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}

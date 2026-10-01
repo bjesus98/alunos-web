@@ -1,0 +1,93 @@
+<main class="pagina-login">
+  <mat-card class="cartao-login">
+    <mat-card-header>
+      <mat-card-title>
+        Sistema de Gestão de Alunos
+      </mat-card-title>
+
+      <mat-card-subtitle>
+        Informe suas credenciais para acessar o sistema
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form
+        class="formulario-login"
+        [formGroup]="formulario"
+        (ngSubmit)="entrar()"
+      >
+        <mat-form-field appearance="outline">
+          <mat-label>Login</mat-label>
+
+          <input
+            matInput
+            type="text"
+            formControlName="login"
+            autocomplete="username"
+          />
+
+          <mat-icon matSuffix>person</mat-icon>
+
+          @if (
+            formulario.controls.login.touched &&
+            formulario.controls.login.hasError('required')
+          ) {
+            <mat-error>
+              O login é obrigatório.
+            </mat-error>
+          }
+
+          @if (
+            formulario.controls.login.touched &&
+            formulario.controls.login.hasError('maxlength')
+          ) {
+            <mat-error>
+              O login deve possuir no máximo 100 caracteres.
+            </mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Senha</mat-label>
+
+          <input
+            matInput
+            [type]="ocultarSenha() ? 'password' : 'text'"
+            formControlName="senha"
+            autocomplete="current-password"
+          />
+
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            aria-label="Mostrar ou ocultar senha"
+            (click)="alternarVisibilidadeSenha()"
+          >
+            <mat-icon>
+              {{ ocultarSenha() ? 'visibility' : 'visibility_off' }}
+            </mat-icon>
+          </button>
+
+          @if (
+            formulario.controls.senha.touched &&
+            formulario.controls.senha.hasError('required')
+          ) {
+            <mat-error>
+              A senha é obrigatória.
+            </mat-error>
+          }
+        </mat-form-field>
+
+        <button
+          mat-flat-button
+          color="primary"
+          type="submit"
+          class="botao-entrar"
+        >
+          Entrar
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</main>
