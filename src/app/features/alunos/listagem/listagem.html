@@ -20,14 +20,16 @@
         </div>
 
         <div class="acoes-cabecalho">
-          <button
-            mat-flat-button
-            color="primary"
-            type="button"
-          >
-            <mat-icon>person_add</mat-icon>
-            Novo Aluno
-          </button>
+          @if (ehAdministrador) {
+            <button
+              mat-flat-button
+              color="primary"
+              type="button"
+            >
+              <mat-icon>person_add</mat-icon>
+              Novo Aluno
+            </button>
+          }
 
           <button
             mat-stroked-button
@@ -322,29 +324,31 @@
                     <mat-icon>visibility</mat-icon>
                   </button>
 
-                  <button
-                    mat-icon-button
-                    type="button"
-                    color="primary"
-                    [attr.aria-label]="
-                      'Editar ' + aluno.nome
-                    "
-                    title="Editar"
-                  >
-                    <mat-icon>edit</mat-icon>
-                  </button>
+                  @if (ehAdministrador) {
+                    <button
+                      mat-icon-button
+                      type="button"
+                      color="primary"
+                      [attr.aria-label]="
+                        'Editar ' + aluno.nome
+                      "
+                      title="Editar"
+                    >
+                      <mat-icon>edit</mat-icon>
+                    </button>
 
-                  <button
-                    mat-icon-button
-                    type="button"
-                    color="warn"
-                    [attr.aria-label]="
-                      'Excluir ' + aluno.nome
-                    "
-                    title="Excluir"
-                  >
-                    <mat-icon>delete_outline</mat-icon>
-                  </button>
+                    <button
+                      mat-icon-button
+                      type="button"
+                      color="warn"
+                      [attr.aria-label]="
+                        'Excluir ' + aluno.nome
+                      "
+                      title="Excluir"
+                    >
+                      <mat-icon>delete_outline</mat-icon>
+                    </button>
+                  }
                 </td>
               </ng-container>
 
