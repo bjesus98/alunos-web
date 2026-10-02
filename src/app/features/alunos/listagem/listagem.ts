@@ -54,31 +54,39 @@ import {
 export class Listagem implements OnInit {
 
   private readonly alunoService = inject(AlunoService);
+
   private readonly authService = inject(AuthService);
+
   private readonly router = inject(Router);
 
   readonly alunos = signal<AlunoListagem[]>([]);
+
   readonly carregando = signal(false);
+
   readonly mensagemErro = signal('');
 
   readonly ehAdministrador =
     this.authService.ehAdministrador();
 
   readonly paginaAtual = signal(0);
+
   readonly tamanhoPagina = signal(10);
+
   readonly totalElementos = signal(0);
+
   readonly totalPaginas = signal(0);
 
   readonly campoBusca = new FormControl('', {
     nonNullable: true
   });
 
-  readonly campoStatus = new FormControl<FiltroStatusAluno>(
-    'ATIVO',
-    {
-      nonNullable: true
-    }
-  );
+  readonly campoStatus =
+    new FormControl<FiltroStatusAluno>(
+      'ATIVO',
+      {
+        nonNullable: true
+      }
+    );
 
   readonly opcoesTamanhoPagina = [
     5,
@@ -102,8 +110,11 @@ export class Listagem implements OnInit {
     this.mensagemErro.set('');
 
     const filtros: FiltroAlunos = {
-      busca: this.campoBusca.value,
-      status: this.campoStatus.value,
+      busca: this.campoBusca
+        .getRawValue()
+        .trim(),
+      status: this.campoStatus
+        .getRawValue(),
       page: this.paginaAtual(),
       size: this.tamanhoPagina()
     };
@@ -112,12 +123,22 @@ export class Listagem implements OnInit {
       .listarTodos(filtros)
       .subscribe({
         next: (resposta) => {
-          this.alunos.set(resposta.conteudo);
-          this.paginaAtual.set(resposta.pagina);
-          this.tamanhoPagina.set(resposta.tamanho);
+          this.alunos.set(
+            resposta.conteudo
+          );
+
+          this.paginaAtual.set(
+            resposta.pagina
+          );
+
+          this.tamanhoPagina.set(
+            resposta.tamanho
+          );
+
           this.totalElementos.set(
             resposta.totalElementos
           );
+
           this.totalPaginas.set(
             resposta.totalPaginas
           );
@@ -177,21 +198,6 @@ export class Listagem implements OnInit {
     this.carregarAlunos();
   }
 
-  limparBusca(): void {
-    this.campoBusca.setValue('');
-    this.paginaAtual.set(0);
-    this.carregarAlunos();
-  }
-
-  limparFiltros(): void {
-    this.campoBusca.setValue('');
-    this.campoStatus.setValue('ATIVO');
-    this.paginaAtual.set(0);
-    this.tamanhoPagina.set(10);
-
-    this.carregarAlunos();
-  }
-
   alterarStatus(
     status: FiltroStatusAluno
   ): void {
@@ -206,11 +212,38 @@ export class Listagem implements OnInit {
     this.carregarAlunos();
   }
 
-  alterarPagina(evento: PageEvent): void {
-    const tamanhoFoiAlterado =
-      evento.pageSize !== this.tamanhoPagina();
+  limparBusca(): void {
+    this.campoBusca.setValue('');
+    this.paginaAtual.set(0);
+    this.carregarAlunos();
+  }
 
-    this.tamanhoPagina.set(evento.pageSize);
+  limparFiltros(): void {
+    this.campoBusca.setValue('');
+
+    this.campoStatus.setValue(
+      'ATIVO',
+      {
+        emitEvent: false
+      }
+    );
+
+    this.paginaAtual.set(0);
+    this.tamanhoPagina.set(10);
+
+    this.carregarAlunos();
+  }
+
+  alterarPagina(
+    evento: PageEvent
+  ): void {
+    const tamanhoFoiAlterado =
+      evento.pageSize !==
+      this.tamanhoPagina();
+
+    this.tamanhoPagina.set(
+      evento.pageSize
+    );
 
     this.paginaAtual.set(
       tamanhoFoiAlterado
@@ -227,7 +260,9 @@ export class Listagem implements OnInit {
     ]);
   }
 
-  verDetalhes(id: number): void {
+  verDetalhes(
+    id: number
+  ): void {
     this.router.navigate([
       '/alunos',
       id

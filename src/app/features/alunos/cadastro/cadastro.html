@@ -220,17 +220,21 @@
               [disabled]="salvando()"
             >
               @if (salvando()) {
-                <mat-spinner diameter="22"></mat-spinner>
+                <ng-container>
+                  <mat-spinner diameter="22"></mat-spinner>
 
-                <span>
-                  Cadastrando...
-                </span>
+                  <span>
+                    Cadastrando...
+                  </span>
+                </ng-container>
               } @else {
-                <mat-icon>save</mat-icon>
+                <ng-container>
+                  <mat-icon>save</mat-icon>
 
-                <span>
-                  Cadastrar aluno
-                </span>
+                  <span>
+                    Cadastrar aluno
+                  </span>
+                </ng-container>
               }
             </button>
           </div>
