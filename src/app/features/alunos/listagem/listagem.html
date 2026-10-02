@@ -2,7 +2,10 @@
   <div class="conteudo-alunos">
     <mat-card class="cartao-alunos">
       <mat-card-header class="cabecalho-cartao">
-        <div mat-card-avatar class="icone-cabecalho">
+        <div
+          mat-card-avatar
+          class="icone-cabecalho"
+        >
           <mat-icon>school</mat-icon>
         </div>
 
@@ -29,6 +32,90 @@
       </mat-card-header>
 
       <mat-card-content>
+        <form
+          class="filtros"
+          (ngSubmit)="aplicarFiltros()"
+        >
+          <mat-form-field
+            appearance="outline"
+            class="campo-busca"
+          >
+            <mat-label>
+              Buscar por nome ou matrícula
+            </mat-label>
+
+            <mat-icon matPrefix>
+              search
+            </mat-icon>
+
+            <input
+              matInput
+              type="search"
+              [formControl]="campoBusca"
+              placeholder="Nome ou início da matrícula"
+            />
+
+            @if (campoBusca.value) {
+              <button
+                mat-icon-button
+                matSuffix
+                type="button"
+                aria-label="Limpar campo de busca"
+                title="Limpar busca"
+                (click)="limparBusca()"
+              >
+                <mat-icon>close</mat-icon>
+              </button>
+            }
+          </mat-form-field>
+
+          <mat-form-field
+            appearance="outline"
+            class="campo-status"
+          >
+            <mat-label>Status</mat-label>
+
+            <mat-select
+              [formControl]="campoStatus"
+              (selectionChange)="alterarStatus($event.value)"
+            >
+              <mat-option value="TODOS">
+                Todos
+              </mat-option>
+
+              <mat-option value="ATIVO">
+                Ativos
+              </mat-option>
+
+              <mat-option value="INATIVO">
+                Inativos
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <button
+            mat-flat-button
+            color="primary"
+            type="submit"
+            class="botao-filtro"
+            [disabled]="carregando()"
+          >
+            <mat-icon>filter_alt</mat-icon>
+            Aplicar
+          </button>
+
+          <button
+            mat-stroked-button
+            type="button"
+            class="botao-filtro"
+            [disabled]="carregando()"
+            (click)="limparFiltros()"
+          >
+            <mat-icon>filter_alt_off</mat-icon>
+            Limpar
+          </button>
+        </form>
+
         @if (carregando()) {
           <div class="estado-centralizado">
             <mat-spinner diameter="44"></mat-spinner>
@@ -47,8 +134,13 @@
             </div>
 
             <div class="conteudo-erro">
-              <strong>Não foi possível carregar a listagem</strong>
-              <span>{{ mensagemErro() }}</span>
+              <strong>
+                Não foi possível carregar a listagem
+              </strong>
+
+              <span>
+                {{ mensagemErro() }}
+              </span>
             </div>
 
             <button
@@ -76,16 +168,16 @@
             <h2>Nenhum aluno encontrado</h2>
 
             <p>
-              Ainda não existem alunos disponíveis para exibição.
+              Nenhum aluno corresponde aos filtros informados.
             </p>
 
             <button
-              mat-flat-button
-              color="primary"
+              mat-stroked-button
               type="button"
+              (click)="limparFiltros()"
             >
-              <mat-icon>person_add</mat-icon>
-              Cadastrar primeiro aluno
+              <mat-icon>filter_alt_off</mat-icon>
+              Limpar filtros
             </button>
           </div>
         }
@@ -124,11 +216,17 @@
               class="tabela-alunos"
             >
               <ng-container matColumnDef="nome">
-                <th mat-header-cell *matHeaderCellDef>
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                >
                   Aluno
                 </th>
 
-                <td mat-cell *matCellDef="let aluno">
+                <td
+                  mat-cell
+                  *matCellDef="let aluno"
+                >
                   <div class="dados-aluno">
                     <div class="avatar-aluno">
                       <mat-icon>person</mat-icon>
@@ -140,11 +238,17 @@
               </ng-container>
 
               <ng-container matColumnDef="matricula">
-                <th mat-header-cell *matHeaderCellDef>
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                >
                   Matrícula
                 </th>
 
-                <td mat-cell *matCellDef="let aluno">
+                <td
+                  mat-cell
+                  *matCellDef="let aluno"
+                >
                   <span class="matricula">
                     {{ aluno.matricula }}
                   </span>
@@ -152,17 +256,31 @@
               </ng-container>
 
               <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef>
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                >
                   Status
                 </th>
 
-                <td mat-cell *matCellDef="let aluno">
+                <td
+                  mat-cell
+                  *matCellDef="let aluno"
+                >
                   <span
                     class="status"
-                    [class.status-ativo]="aluno.status === 'ATIVO'"
-                    [class.status-inativo]="aluno.status === 'INATIVO'"
+                    [class.status-ativo]="
+                      aluno.status === 'ATIVO'
+                    "
+                    [class.status-inativo]="
+                      aluno.status === 'INATIVO'
+                    "
                   >
-                    <span class="status-indicador"></span>
+                    <span
+                      class="status-indicador"
+                      aria-hidden="true"
+                    ></span>
+
                     {{ aluno.status }}
                   </span>
                 </td>
@@ -186,7 +304,9 @@
                     mat-icon-button
                     type="button"
                     color="primary"
-                    aria-label="Ver detalhes do aluno"
+                    [attr.aria-label]="
+                      'Ver detalhes de ' + aluno.nome
+                    "
                     title="Detalhes"
                   >
                     <mat-icon>visibility</mat-icon>
@@ -196,7 +316,9 @@
                     mat-icon-button
                     type="button"
                     color="primary"
-                    aria-label="Editar aluno"
+                    [attr.aria-label]="
+                      'Editar ' + aluno.nome
+                    "
                     title="Editar"
                   >
                     <mat-icon>edit</mat-icon>
@@ -206,7 +328,9 @@
                     mat-icon-button
                     type="button"
                     color="warn"
-                    aria-label="Excluir aluno"
+                    [attr.aria-label]="
+                      'Excluir ' + aluno.nome
+                    "
                     title="Excluir"
                   >
                     <mat-icon>delete_outline</mat-icon>
@@ -227,6 +351,17 @@
                 "
               ></tr>
             </table>
+
+            <mat-paginator
+              [length]="totalElementos()"
+              [pageIndex]="paginaAtual()"
+              [pageSize]="tamanhoPagina()"
+              [pageSizeOptions]="opcoesTamanhoPagina"
+              [showFirstLastButtons]="true"
+              aria-label="Paginação da lista de alunos"
+              (page)="alterarPagina($event)"
+            >
+            </mat-paginator>
           </div>
         }
       </mat-card-content>
