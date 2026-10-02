@@ -6,6 +6,10 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import {
+  AlunoCadastro,
+  AlunoCadastroResposta
+} from '../../shared/models/aluno-cadastro.model';
+import {
   AlunoDetalhes
 } from '../../shared/models/aluno-detalhes.model';
 import {
@@ -65,6 +69,15 @@ export class AlunoService {
   ): Observable<AlunoDetalhes> {
     return this.http.get<AlunoDetalhes>(
       `${this.apiUrl}/${id}`
+    );
+  }
+
+  cadastrar(
+    dados: AlunoCadastro
+  ): Observable<AlunoCadastroResposta> {
+    return this.http.post<AlunoCadastroResposta>(
+      this.apiUrl,
+      dados
     );
   }
 }

@@ -221,6 +221,12 @@ export class Listagem implements OnInit {
     this.carregarAlunos();
   }
 
+  novoAluno(): void {
+    this.router.navigate([
+      '/alunos/novo'
+    ]);
+  }
+
   verDetalhes(id: number): void {
     this.router.navigate([
       '/alunos',
