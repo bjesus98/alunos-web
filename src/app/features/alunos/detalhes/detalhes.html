@@ -1,0 +1,179 @@
+<main class="pagina-detalhes">
+  <div class="conteudo-detalhes">
+    <mat-card class="cartao-detalhes">
+      <mat-card-header class="cabecalho-cartao">
+        <div
+          mat-card-avatar
+          class="icone-cabecalho"
+        >
+          <mat-icon>person</mat-icon>
+        </div>
+
+        <div class="titulos">
+          <mat-card-title>
+            Detalhes do aluno
+          </mat-card-title>
+
+          <mat-card-subtitle>
+            Consulte os dados completos do aluno.
+          </mat-card-subtitle>
+        </div>
+
+        <div class="acoes-cabecalho">
+          <button
+            mat-stroked-button
+            type="button"
+            (click)="voltar()"
+          >
+            <mat-icon>arrow_back</mat-icon>
+            Voltar
+          </button>
+
+          @if (ehAdministrador && aluno()) {
+            <button
+              mat-flat-button
+              color="primary"
+              type="button"
+              (click)="editar()"
+            >
+              <mat-icon>edit</mat-icon>
+              Editar
+            </button>
+          }
+        </div>
+      </mat-card-header>
+
+      <mat-card-content>
+        @if (carregando()) {
+          <div class="estado-centralizado">
+            <mat-spinner diameter="44"></mat-spinner>
+
+            <p>Carregando detalhes...</p>
+          </div>
+        }
+
+        @if (!carregando() && mensagemErro()) {
+          <div
+            class="mensagem-erro"
+            role="alert"
+          >
+            <mat-icon>error_outline</mat-icon>
+
+            <div class="conteudo-erro">
+              <strong>
+                Não foi possível exibir o aluno
+              </strong>
+
+              <span>
+                {{ mensagemErro() }}
+              </span>
+            </div>
+
+            <button
+              mat-stroked-button
+              type="button"
+              (click)="voltar()"
+            >
+              <mat-icon>arrow_back</mat-icon>
+              Voltar para a listagem
+            </button>
+          </div>
+        }
+
+        @if (
+          !carregando() &&
+          !mensagemErro() &&
+          aluno();
+          as dados
+        ) {
+          <div class="identificacao">
+            <div class="avatar-aluno">
+              <mat-icon>person</mat-icon>
+            </div>
+
+            <div>
+              <h1>{{ dados.nome }}</h1>
+
+              <span
+                class="status"
+                [class.status-ativo]="
+                  dados.status === 'ATIVO'
+                "
+                [class.status-inativo]="
+                  dados.status === 'INATIVO'
+                "
+              >
+                <span
+                  class="status-indicador"
+                  aria-hidden="true"
+                ></span>
+
+                {{ dados.status }}
+              </span>
+            </div>
+          </div>
+
+          <mat-divider></mat-divider>
+
+          <section class="grade-dados">
+            <div class="campo-detalhe">
+              <mat-icon>badge</mat-icon>
+
+              <div>
+                <span class="rotulo">
+                  Matrícula
+                </span>
+
+                <strong>
+                  {{ dados.matricula }}
+                </strong>
+              </div>
+            </div>
+
+            <div class="campo-detalhe">
+              <mat-icon>credit_card</mat-icon>
+
+              <div>
+                <span class="rotulo">
+                  CPF
+                </span>
+
+                <strong>
+                  {{ dados.cpf }}
+                </strong>
+              </div>
+            </div>
+
+            <div class="campo-detalhe">
+              <mat-icon>mail</mat-icon>
+
+              <div>
+                <span class="rotulo">
+                  E-mail
+                </span>
+
+                <strong>
+                  {{ dados.email }}
+                </strong>
+              </div>
+            </div>
+
+            <div class="campo-detalhe">
+              <mat-icon>phone</mat-icon>
+
+              <div>
+                <span class="rotulo">
+                  Telefone
+                </span>
+
+                <strong>
+                  {{ dados.telefone }}
+                </strong>
+              </div>
+            </div>
+          </section>
+        }
+      </mat-card-content>
+    </mat-card>
+  </div>
+</main>

@@ -6,6 +6,9 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import {
+  AlunoDetalhes
+} from '../../shared/models/aluno-detalhes.model';
+import {
   AlunoListagem,
   FiltroAlunos,
   PaginaResposta
@@ -19,7 +22,7 @@ export class AlunoService {
   private readonly http = inject(HttpClient);
 
   private readonly apiUrl =
-    'http://localhost:8080/alunos';
+    'http:' + '//' + 'localhost:8080/alunos';
 
   listarTodos(
     filtros: FiltroAlunos = {}
@@ -54,6 +57,14 @@ export class AlunoService {
       {
         params: parametros
       }
+    );
+  }
+
+  buscarPorId(
+    id: number
+  ): Observable<AlunoDetalhes> {
+    return this.http.get<AlunoDetalhes>(
+      `${this.apiUrl}/${id}`
     );
   }
 }

@@ -244,7 +244,9 @@
                       <mat-icon>person</mat-icon>
                     </div>
 
-                    <span>{{ aluno.nome }}</span>
+                    <span>
+                      {{ aluno.nome }}
+                    </span>
                   </div>
                 </td>
               </ng-container>
@@ -320,6 +322,7 @@
                       'Ver detalhes de ' + aluno.nome
                     "
                     title="Detalhes"
+                    (click)="verDetalhes(aluno.id)"
                   >
                     <mat-icon>visibility</mat-icon>
                   </button>

@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 
 import { authGuard } from './core/guards/auth.guard';
+import { Detalhes } from './features/alunos/detalhes/detalhes';
 import { Listagem } from './features/alunos/listagem/listagem';
 import { Login } from './features/autenticacao/login/login';
 
@@ -17,6 +18,13 @@ export const routes: Routes = [
   {
     path: 'alunos',
     component: Listagem,
+    canActivate: [
+      authGuard
+    ]
+  },
+  {
+    path: 'alunos/:id',
+    component: Detalhes,
     canActivate: [
       authGuard
     ]

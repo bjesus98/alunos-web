@@ -61,6 +61,9 @@ export class Listagem implements OnInit {
   readonly carregando = signal(false);
   readonly mensagemErro = signal('');
 
+  readonly ehAdministrador =
+    this.authService.ehAdministrador();
+
   readonly paginaAtual = signal(0);
   readonly tamanhoPagina = signal(10);
   readonly totalElementos = signal(0);
@@ -216,6 +219,13 @@ export class Listagem implements OnInit {
     );
 
     this.carregarAlunos();
+  }
+
+  verDetalhes(id: number): void {
+    this.router.navigate([
+      '/alunos',
+      id
+    ]);
   }
 
   sair(): void {
