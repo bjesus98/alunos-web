@@ -16,14 +16,20 @@ export class AuthService {
   private readonly http = inject(HttpClient);
 
   private readonly apiUrl =
-    'http://localhost:8080/auth/login';
+    'http:' + '//' + 'localhost:8080/auth/login';
 
   private readonly chaveToken = 'alunos_token';
+
   private readonly chavePerfil = 'alunos_perfil';
 
-  login(dados: LoginDados): Observable<LoginResposta> {
+  login(
+    dados: LoginDados
+  ): Observable<LoginResposta> {
     return this.http
-      .post<LoginResposta>(this.apiUrl, dados)
+      .post<LoginResposta>(
+        this.apiUrl,
+        dados
+      )
       .pipe(
         tap(resposta => {
           this.salvarAutenticacao(resposta);
@@ -32,12 +38,19 @@ export class AuthService {
   }
 
   logout(): void {
-    sessionStorage.removeItem(this.chaveToken);
-    sessionStorage.removeItem(this.chavePerfil);
+    sessionStorage.removeItem(
+      this.chaveToken
+    );
+
+    sessionStorage.removeItem(
+      this.chavePerfil
+    );
   }
 
   obterToken(): string | null {
-    return sessionStorage.getItem(this.chaveToken);
+    return sessionStorage.getItem(
+      this.chaveToken
+    );
   }
 
   obterPerfil(): Perfil | null {
