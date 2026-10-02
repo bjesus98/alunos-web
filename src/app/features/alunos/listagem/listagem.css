@@ -6,13 +6,12 @@
   min-height: 100vh;
   padding: 32px;
   box-sizing: border-box;
-  background:
-    linear-gradient(
-      135deg,
-      #e8eaf6 0%,
-      #e3f2fd 50%,
-      #f5f7fa 100%
-    );
+  background: linear-gradient(
+    135deg,
+    #e8eaf6 0%,
+    #e3f2fd 50%,
+    #f5f7fa 100%
+  );
 }
 
 .conteudo-alunos {
@@ -39,6 +38,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
   color: #ffffff;
   background-color: #0d66c2;
 }
@@ -67,11 +67,44 @@ mat-card-subtitle {
 .acoes-cabecalho {
   display: flex;
   align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.acoes-cabecalho button {
+  white-space: nowrap;
 }
 
 mat-card-content {
   padding: 24px 28px 28px;
 }
+
+/* Filtros */
+
+.filtros {
+  display: grid;
+  grid-template-columns:
+    minmax(280px, 1fr)
+    180px
+    auto
+    auto;
+  align-items: start;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.campo-busca,
+.campo-status {
+  width: 100%;
+}
+
+.botao-filtro {
+  min-height: 56px;
+  padding-inline: 20px;
+  white-space: nowrap;
+}
+
+/* Estados da página */
 
 .estado-centralizado,
 .estado-vazio {
@@ -120,6 +153,8 @@ mat-card-content {
   font-size: 38px;
 }
 
+/* Mensagem de erro */
+
 .mensagem-erro {
   display: grid;
   grid-template-columns: auto 1fr auto;
@@ -158,6 +193,8 @@ mat-card-content {
   font-size: 14px;
 }
 
+/* Resumo da listagem */
+
 .resumo-listagem {
   display: flex;
   align-items: center;
@@ -181,11 +218,14 @@ mat-card-content {
   font-size: 18px;
 }
 
+/* Tabela */
+
 .tabela-container {
   width: 100%;
   overflow-x: auto;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
+  background-color: #ffffff;
 }
 
 .tabela-alunos {
@@ -206,6 +246,10 @@ mat-card-content {
 
 .mat-mdc-cell {
   color: #1f2937;
+}
+
+.mat-mdc-row {
+  transition: background-color 150ms ease;
 }
 
 .mat-mdc-row:hover {
@@ -240,12 +284,15 @@ mat-card-content {
   font-weight: 600;
 }
 
+/* Status */
+
 .status {
   display: inline-flex;
   align-items: center;
   gap: 7px;
   min-width: 78px;
   padding: 6px 10px;
+  box-sizing: border-box;
   border-radius: 999px;
   font-size: 12px;
   font-weight: 600;
@@ -254,6 +301,7 @@ mat-card-content {
 .status-indicador {
   width: 8px;
   height: 8px;
+  flex-shrink: 0;
   border-radius: 50%;
 }
 
@@ -267,19 +315,46 @@ mat-card-content {
 }
 
 .status-inativo {
-  color: #8a1c1c;
-  background-color: #fce8e6;
+  color: #4b5563;
+  background-color: #e5e7eb;
 }
 
 .status-inativo .status-indicador {
-  background-color: #c5221f;
+  background-color: #6b7280;
 }
+
+/* Ações */
 
 .coluna-acoes {
   width: 170px;
   text-align: center;
   white-space: nowrap;
 }
+
+/* Paginação */
+
+mat-paginator {
+  border-top: 1px solid #e5e7eb;
+  background-color: #ffffff;
+}
+
+/* Responsividade intermediária */
+
+@media (max-width: 900px) {
+  .filtros {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .campo-busca {
+    grid-column: 1 / -1;
+  }
+
+  .botao-filtro {
+    width: 100%;
+  }
+}
+
+/* Responsividade para celular */
 
 @media (max-width: 720px) {
   .pagina-alunos {
@@ -298,6 +373,7 @@ mat-card-content {
 
   .acoes-cabecalho {
     width: 100%;
+    flex-direction: column;
   }
 
   .acoes-cabecalho button {
@@ -319,5 +395,31 @@ mat-card-content {
 
   .mensagem-erro button {
     width: 100%;
+  }
+}
+
+@media (max-width: 560px) {
+  .filtros {
+    grid-template-columns: 1fr;
+  }
+
+  .campo-busca {
+    grid-column: auto;
+  }
+
+  .botao-filtro {
+    width: 100%;
+  }
+
+  mat-card-title {
+    font-size: 23px;
+  }
+
+  mat-card-subtitle {
+    font-size: 14px;
+  }
+
+  .resumo-listagem {
+    gap: 12px;
   }
 }
