@@ -59,3 +59,34 @@ input::-ms-reveal,
 input::-ms-clear {
   display: none;
 }
+
+.mensagem-erro {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+  color: #b3261e;
+  background-color: #f9dedc;
+}
+
+.mensagem-erro mat-icon {
+  flex-shrink: 0;
+}
+
+.botao-entrar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.botao-entrar mat-spinner {
+  display: inline-block;
+}
+
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}

@@ -24,6 +24,7 @@
             type="text"
             formControlName="login"
             autocomplete="username"
+            [disabled]="carregando()"
           />
 
           <mat-icon matSuffix>person</mat-icon>
@@ -55,6 +56,7 @@
             [type]="ocultarSenha() ? 'password' : 'text'"
             formControlName="senha"
             autocomplete="current-password"
+            [disabled]="carregando()"
           />
 
           <button
@@ -62,6 +64,7 @@
             matSuffix
             type="button"
             aria-label="Mostrar ou ocultar senha"
+            [disabled]="carregando()"
             (click)="alternarVisibilidadeSenha()"
           >
             <mat-icon>
@@ -79,13 +82,29 @@
           }
         </mat-form-field>
 
+        @if (mensagemErro()) {
+          <div
+            class="mensagem-erro"
+            role="alert"
+          >
+            <mat-icon>error</mat-icon>
+            <span>{{ mensagemErro() }}</span>
+          </div>
+        }
+
         <button
           mat-flat-button
           color="primary"
           type="submit"
           class="botao-entrar"
+          [disabled]="carregando()"
         >
-          Entrar
+          @if (carregando()) {
+            <mat-spinner diameter="22"></mat-spinner>
+            <span>Entrando...</span>
+          } @else {
+            <span>Entrar</span>
+          }
         </button>
       </form>
     </mat-card-content>
