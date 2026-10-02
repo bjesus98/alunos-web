@@ -1,17 +1,23 @@
-import { Component, inject, signal } from '@angular/core';
+import {
+  Component,
+  inject,
+  signal
+} from '@angular/core';
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Router } from '@angular/router';
+import {
+  MatProgressSpinnerModule
+} from '@angular/material/progress-spinner';
 import { finalize } from 'rxjs';
 
 import { AuthService } from '../../../core/services/auth';
@@ -33,10 +39,13 @@ import { AuthService } from '../../../core/services/auth';
 export class Login {
 
   private readonly authService = inject(AuthService);
+
   private readonly router = inject(Router);
 
   readonly ocultarSenha = signal(true);
+
   readonly carregando = signal(false);
+
   readonly mensagemErro = signal('');
 
   readonly formulario = new FormGroup({
@@ -70,22 +79,31 @@ export class Login {
       return;
     }
 
+    const dados = this.formulario.getRawValue();
+
+    this.formulario.disable();
     this.carregando.set(true);
 
     this.authService
-      .login(this.formulario.getRawValue())
+      .login(dados)
       .pipe(
         finalize(() => {
+          this.formulario.enable();
           this.carregando.set(false);
         })
       )
       .subscribe({
         next: () => {
-          this.router.navigate(['/alunos']);
+          this.router.navigate([
+            '/alunos'
+          ]);
         },
 
         error: (erro) => {
-          console.error('Erro durante o login:', erro);
+          console.error(
+            'Erro durante o login:',
+            erro
+          );
 
           if (erro.status === 401) {
             this.mensagemErro.set(
